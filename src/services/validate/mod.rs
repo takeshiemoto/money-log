@@ -7,4 +7,25 @@ impl InputValidator {
             _ => panic!("入力値が不正です"),
         }
     }
+
+    pub fn validate_register_type(register_type: u8) {
+        match register_type {
+            0 | 1 => {}
+            _ => panic!("入力値が不正です"),
+        }
+    }
+
+    pub fn validate_category(register_type: u8, category_type: u8) {
+        if register_type == 0 {
+            match category_type {
+                0 | 1 | 2 => {}
+                _ => panic!("入力値が不正です"),
+            }
+        } else {
+            match category_type {
+                0 | 1 | 2 => {}
+                _ => panic!("入力値が不正です"),
+            }
+        }
+    }
 }
