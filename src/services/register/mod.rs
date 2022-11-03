@@ -1,7 +1,27 @@
-use crate::services;
+use crate::{models, services};
 use chrono::NaiveDate;
 use std::io;
 use std::str::FromStr;
+
+pub fn run(file_path: &str) {
+    println!("収支の登録を行います");
+
+    let register_type = input_register_type();
+    let name = input_name();
+    let category_type = input_category_type(register_type);
+    let price = input_price();
+    let date = input_date();
+
+    let category = models::Item::get_category(register_type, category_type);
+
+    let item = models::Item::new(name, category, price, date);
+    println!("{:?}", &item);
+
+    let mut date = services::io::read_data_or_create_new_date(file_path);
+    date.push(item);
+
+    services::io::write_to_json(&date, file_path);
+}
 
 fn input_register_type() -> u8 {
     println!("登録種別を入力してください（0:収入、1:支出）");
