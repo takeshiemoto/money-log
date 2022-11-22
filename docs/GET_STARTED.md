@@ -23,52 +23,30 @@ let s1 = String::from("Hello world");
 let s2 = s1;
 ```
 
-### MoveとCopy
+### 可変な参照の制約
 
-- Copyトレイトを実装していたら値はCopy。
-- Copyトレイト実装していない場合は所有権がMoveする。
-
-```rust
-// Copy
-let a = 100;
-let b = a;
-
-println!("{}", b);
-
-// Move
-let a = String::from("FooBar");
-let b = a;
-
-println!("{}", str); // Error!
-```
-
-### 借用
-
-- 引数に値の参照を渡すことを借用という。
-- 所有権をMoveさせたくない時に使う。
-- 所有権を必要としない関数への引数など。
+特定のスコープで、ある特定のデータに対しては一つしか可変な参照を持てない。データ競合を回避する利点がある。
 
 ```rust
+let mut s = String::from("hello");
 
-let world = String::from("world");
-hello_print(world);
+// 1回目
+let r1 = &mut s;
+// 2回目
+let r2 = &mut s;
 
-// worldはhello_printに所有権を奪われているため利用できない
-println!("{}", world); // Error!
+println!("{}, {}", r1, r2);
 
-// hello_printは所有権を奪う
-fn hello_print(message: String) {
-    println!("Hello {}", message);
-}
-
-let world = String::from("world");
-hello_print( & world);
-
-// 所有権はMoveしていないので利用できる
-println!("{}", world);
-
-// 参照だけを受け取る
-fn hello_print(message: &str) {
-    println!("Hello {}", message);
-}
 ```
+
+不変な参照をしている間は、可変な参照をすることはできない。
+
+```rust
+let mut s = String::from("hello");
+
+let r1 = &s; // 問題なし
+let r2 = &s; // 問題なし
+let r3 = &mut s; // 大問題！
+
+```
+
