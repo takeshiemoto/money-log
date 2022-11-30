@@ -65,4 +65,53 @@ fn dangle() -> &String { // dangleはStringへの参照を返す
 
 ```
 
-Rustではコンパイルエラーになる。
+## 構造体
+
+- 構造体を定義する。
+- 構造体はインスタンス化して利用する。
+- 内容を更新したい構造体は`mut`を付けて可変な構造体にする。
+- `..`を構造体更新記法といい、JSの...と同じ展開が可能。
+- 構造体を出力するには`#[derive(Debug)]`を構造体の上に書く。
+- 出力時のフォーマットは`{:?}`。
+
+```rust
+
+#[derive(Debug)]
+struct User {
+    username: String,
+    email: String,
+    sing_in_count: u32,
+    active: bool,
+}
+
+fn main() {
+
+    let user_0 = User {
+        username: String::from("Hajime"),
+        email: String::from("hajime@example.com"),
+        sing_in_count: 0,
+        active: true,
+    };
+   
+    // ミュータブルな構造体
+    let mut user_1 = User {
+        username: String::from("Takeshi"),
+        email: String::from("takeshi@example.com"),
+        sing_in_count: 0,
+        active: true,
+    };
+
+    user_1.sing_in_count = 1;
+    
+    let user_2 = User {
+        username: String::from("Hibiki"),
+        email: String::from("hibiki@example.com"),
+        ..user_1
+    };
+    
+    println!("{:?}", user_0);
+    println!("{:?}", user_1);
+    println!("{:?}", user_2);
+}
+
+```
